@@ -167,7 +167,7 @@ const Index = () => {
                 </Button>
               </Link>
               {!user && (
-                <Link to="/auth">
+                <Link to="/user-auth">
                   <Button variant="outline" size="lg">
                     Create Account
                   </Button>

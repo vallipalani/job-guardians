@@ -9,7 +9,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Badge } from "@/components/ui/badge";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { Search, MessageSquare, Shield, AlertTriangle, Filter } from "lucide-react";
+import { Search, MessageSquare, Shield, AlertTriangle, Filter, ShieldAlert } from "lucide-react";
 import { User } from "@supabase/supabase-js";
 import { useNavigate } from "react-router-dom";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -205,12 +205,19 @@ export default function Reviews() {
                           <div className="flex items-start justify-between mb-3">
                             <div className="flex-1">
                               <div className="flex items-center gap-2 mb-1">
-                                <h3 className="font-semibold text-lg">{review.companies?.name || "Unknown Company"}</h3>
-                                {review.companies?.verified && (
+                                <button
+                                  onClick={() => navigate(`/company/${review.company_id}`)}
+                                  className="font-semibold text-lg hover:text-primary hover:underline text-left"
+                                >
+                                  {review.companies?.name || "Unknown Company"}
+                                </button>
+                                {review.companies?.verified ? (
                                   <Badge variant="secondary" className="bg-success text-success-foreground">
                                     <Shield className="h-3 w-3 mr-1" />
                                     Verified
                                   </Badge>
+                                ) : (
+                                  <Badge variant="secondary">Unverified</Badge>
                                 )}
                               </div>
                               <div className="flex items-center gap-2 text-sm text-muted-foreground">

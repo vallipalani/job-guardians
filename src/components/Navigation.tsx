@@ -19,7 +19,7 @@ export const Navigation = ({ user }: NavigationProps) => {
       toast.error("Failed to log out");
     } else {
       toast.success("Logged out successfully");
-      navigate("/auth");
+      navigate("/");
     }
   };
 
@@ -49,14 +49,6 @@ export const Navigation = ({ user }: NavigationProps) => {
             >
               Reviews
             </Link>
-            <Link 
-              to="/company" 
-              className={`text-sm font-medium transition-colors hover:text-primary ${
-                location.pathname === "/company" ? "text-primary" : "text-muted-foreground"
-              }`}
-            >
-              For Companies
-            </Link>
             
             {user ? (
               <Button variant="outline" size="sm" onClick={handleLogout}>
@@ -64,7 +56,7 @@ export const Navigation = ({ user }: NavigationProps) => {
                 Logout
               </Button>
             ) : (
-              <Link to="/auth">
+              <Link to="/user-auth">
                 <Button size="sm">Login</Button>
               </Link>
             )}
