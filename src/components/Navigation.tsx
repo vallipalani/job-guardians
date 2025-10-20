@@ -1,9 +1,10 @@
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Shield, LogOut } from "lucide-react";
+import { Shield, LogOut, User } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import { useState, useEffect } from "react";
 
 interface NavigationProps {
   user: any;
@@ -12,6 +13,27 @@ interface NavigationProps {
 export const Navigation = ({ user }: NavigationProps) => {
   const location = useLocation();
   const navigate = useNavigate();
+  const [userRole, setUserRole] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchUserRole = async () => {
+      if (user) {
+        const { data } = await supabase
+          .from("user_roles")
+          .select("role")
+          .eq("user_id", user.id)
+          .single();
+        
+        if (data) {
+          setUserRole(data.role);
+        }
+      } else {
+        setUserRole(null);
+      }
+    };
+
+    fetchUserRole();
+  }, [user]);
 
   const handleLogout = async () => {
     const { error } = await supabase.auth.signOut();
@@ -22,6 +44,8 @@ export const Navigation = ({ user }: NavigationProps) => {
       navigate("/");
     }
   };
+
+  const profilePath = userRole === "company" ? "/company-profile" : "/user-profile";
 
   return (
     <nav className="border-b bg-card">
@@ -51,10 +75,21 @@ export const Navigation = ({ user }: NavigationProps) => {
             </Link>
             
             {user ? (
-              <Button variant="outline" size="sm" onClick={handleLogout}>
-                <LogOut className="h-4 w-4 mr-2" />
-                Logout
-              </Button>
+              <>
+                <Link 
+                  to={profilePath} 
+                  className={`text-sm font-medium transition-colors hover:text-primary ${
+                    location.pathname === profilePath ? "text-primary" : "text-muted-foreground"
+                  }`}
+                >
+                  <User className="h-4 w-4 inline mr-1" />
+                  My Profile
+                </Link>
+                <Button variant="outline" size="sm" onClick={handleLogout}>
+                  <LogOut className="h-4 w-4 mr-2" />
+                  Logout
+                </Button>
+              </>
             ) : (
               <Link to="/user-auth">
                 <Button size="sm">Login</Button>
