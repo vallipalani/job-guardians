@@ -61,7 +61,7 @@ export default function Reviews() {
 
     if (!user) {
       toast.error("Please login to submit a review");
-      navigate("/auth");
+      navigate("/user-auth");
       return;
     }
 
@@ -312,7 +312,7 @@ export default function Reviews() {
                     <div className="text-center py-8">
                       <AlertTriangle className="h-12 w-12 mx-auto mb-4 text-muted-foreground opacity-50" />
                       <p className="text-muted-foreground mb-4">You must be signed in to post a review.</p>
-                      <Button onClick={() => navigate("/auth")} className="w-full">
+                      <Button onClick={() => navigate("/user-auth")} className="w-full">
                         Sign In
                       </Button>
                     </div>
